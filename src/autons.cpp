@@ -324,46 +324,49 @@ std::string skills(bool calibrate, auto_variation var, bool get_name) {
         return "";
     }
     odom_constants();
-    turn_to_point_params p_turn_point = {};
-    p_turn_point.angle_offset = 0;
-    p_turn_point.timeout = 500;
-    chassis.turn_to_point(-45,-46);
+    chassis.drive_distance(40);
     wait(0.1,sec);
-    chassis.drive_to_point(-45,-46);
-    wait(0.1,sec);
-    // turn_to_point_params p_turn_point = {};
-    // p_turn_point = {};
-    // p_turn_point.angle_offset = 180;
-    // p_turn_point.timeout = 500;
-    // chassis.turn_to_point(-45,-60,p_turn_point);
     chassis.turn_to_angle(270);
+    wait(0.4,sec);
+    assembly.tongue_piston.toggle();
+    assembly.intake_motor.spin(forward,12,volt);
+    wait(0.5,sec);
+    chassis.drive_distance(15,{.max_voltage = 6});
+    wait(4,sec);
+    chassis.drive_distance(-15);
+    assembly.intake_motor.stop();
+    assembly.tongue_piston.toggle();
     wait(0.1,sec);
-    chassis.turn_to_point(-60,-45);
+    chassis.turn_to_angle(180);
     wait(0.1,sec);
-    chassis.drive_to_point(-60,-45);
-    wait(1.5,sec);
-    chassis.drive_to_point(-55,-45);
-    wait(0.1,sec);
-    chassis.turn_to_point(-30,-60);
-    wait(1,sec);
-    chassis.drive_to_point(-30,-60);
+    chassis.drive_distance(15);
     wait(0.1,sec);
     chassis.turn_to_angle(90);
-    // wait(0.1,sec);
-    // chassis.drive_to_point()
-    // p_turn_point = {};
-    // p_turn_point.angle_offset = 90;
-    // p_turn_point.timeout = 500;
-    // chassis.turn_to_point(-40,-40,p_turn_point);
-    // wait(0.1,sec);
-    // chassis.drive_to_point(-40,-40);
-    // wait(0.1,sec);
-    // p_turn_point = {};
-    // p_turn_point.angle_offset = 90;
-    // p_turn_point.timeout = 500;
-    // chassis.turn_to_point(60,-40,p_turn_point);
-    // wait(0.1,sec);
-    // chassis.drive_to_point(60,-40);
+    wait(0.1,sec);
+    chassis.drive_distance(90);
+    wait(0.1,sec);
+    chassis.turn_to_angle(0);
+    wait(0.1,sec);
+    chassis.drive_distance(16);
+    // 45,-48
+    wait(0.1,sec);
+    chassis.turn_to_angle(90);
+    wait(0.1,sec);
+    chassis.drive_distance(-15);
+    wait(0.1,sec);
+    assembly.outtake_motor.spin(forward,12,volt);
+    wait(2,sec);
+    assembly.outtake_motor.stop();
+    assembly.tongue_piston.toggle();
+    assembly.intake_motor.spin(forward,12,volt);
+    wait(0.5,sec);
+    chassis.drive_distance(37);
+    wait(1.5,sec);
+    chassis.drive_distance(-37);
+    wait(0.5,sec);
+    assembly.intake_motor.stop();
+    assembly.tongue_piston.toggle();
+
 
     
 
