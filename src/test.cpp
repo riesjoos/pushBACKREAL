@@ -19,9 +19,17 @@ void test_drive() {
 }
 
 void test_heading() {
-	chassis.drive_distance(10, { .heading = 15 });
-	chassis.drive_distance(20, { .heading = 45 });
-	chassis.drive_distance(-30, { .heading = 0 });
+	drive_distance_params p1 = {};
+	p1.heading = 15;
+	chassis.drive_distance(10, p1);
+
+	p1 = {};
+	p1.heading = 45;
+	chassis.drive_distance(20, p1);
+	
+	p1 = {};
+	p1.heading = 0;
+	chassis.drive_distance(-30, p1);
 }
 
 void test_turn() {
@@ -29,8 +37,14 @@ void test_turn() {
 	chassis.turn_to_angle(30);
 	chassis.turn_to_angle(90);
 	chassis.turn_to_angle(225);
-	chassis.turn_to_angle(180, { .turn_direction = ccw });
-	chassis.turn_to_angle(0, { .turn_direction = cw });
+
+	turn_to_angle_params p1 = {};
+	p1.turn_direction = ccw;
+	chassis.turn_to_angle(180, p1);
+
+	p1 = {};
+	p1.turn_direction = cw;
+	chassis.turn_to_angle(0, p1);
 }
 
 void test_swing() {
@@ -69,8 +83,12 @@ void test_odom_turn() {
 	chassis.turn_to_point(2.887,  5);
 	chassis.turn_to_point(5, 0);
 	chassis.turn_to_point(-5, -5);
-	chassis.turn_to_point(0,  -5, {.turn_direction = ccw});
-	chassis.turn_to_point(0,  5, {.turn_direction = cw});
+	turn_to_point_params p1 = {};
+	p1.turn_direction = ccw;
+	chassis.turn_to_point(0,  -5, p1);
+	p1 = {};
+	p1.turn_direction = cw;
+	chassis.turn_to_point(0,  5, p1);
 }
 
 void test_odom_swing() {
@@ -83,7 +101,9 @@ void test_odom_full() {
 	chassis.set_coordinates(0, 0, 0);
 
 	chassis.drive_to_point(0, 24);
-	chassis.turn_to_point(24, 0, { .angle_offset = 180 });
+	turn_to_point_params p1 = {};
+	p1.angle_offset = 180;
+	chassis.turn_to_point(24, 0, p1);
 	chassis.drive_to_point(24, 0);
 	chassis.right_swing_to_point(0, 0);
 	chassis.drive_to_point(0, 0);
@@ -94,8 +114,12 @@ void test_boomerang() {
 	odom_constants();
 	chassis.set_coordinates(0, 0, 0);
 
-	chassis.drive_to_pose(24, 24, 90, {.lead = .4});
-	chassis.drive_to_pose(24, 0, 0, {.lead = .2});
+	drive_to_pose_params p1 = {};
+	p1.lead = .4;
+	chassis.drive_to_pose(24, 24, 90, p1);
+	p1 = {};
+	p1.lead = .2;
+	chassis.drive_to_pose(24, 0, 0, p1);
 	chassis.drive_to_pose(0, 24, 315);
 	chassis.drive_to_pose(0, 0, 0);
 	}
@@ -130,10 +154,16 @@ void test_pursuit() {
 	odom_constants();
 	chassis.set_coordinates(0, 0, 0);
 
-	chassis.follow_path(path, {.lookahead_distance = 3, .settle_error = 1});
+	follow_path_params p1 = {};
+	p1.lookahead_distance = 3;
+	p1.settle_error = 1;
+	chassis.follow_path(path, p1);
 	// Reversing path
 	std::vector<point> reversed_path(path.rbegin(), path.rend());
-	chassis.follow_path(reversed_path, {.lookahead_distance = 4, .settle_error = 3});
+	p1 = {};
+	p1.lookahead_distance = 4;
+	p1.settle_error=3;
+	chassis.follow_path(reversed_path, p1);
 	chassis.turn_to_angle(0);
 }
 

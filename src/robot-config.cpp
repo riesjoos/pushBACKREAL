@@ -32,7 +32,7 @@ Chassis chassis(
     }),
 
     PORT21, // Inertia sensor port
-    360,    // Inertial scale, value that reads after turning robot a full 360
+    356.94,    // Inertial scale, value that reads after turning robot a full 360
 
     PORT5, // Forward Tracker Port
     -2,     // Forward Tracker wheel diameter in inches (negative flips direction)

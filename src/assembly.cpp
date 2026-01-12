@@ -6,20 +6,24 @@ using namespace vex;
 Assembly::Assembly(
     mik::motor outtake_motor,
     mik::motor intake_motor, 
+    mik::piston mid_goal_piston,
     mik::piston tongue_piston,
-    mik::piston wing_piston,
-    mik::piston mid_goal_piston
+    mik::piston wing_piston
 ) :
     // Assign the ports to the devices
     outtake_motor(outtake_motor),
     intake_motor(intake_motor),
+    mid_goal_piston(mid_goal_piston),
     tongue_piston(tongue_piston),
-    wing_piston(wing_piston),
-    mid_goal_piston(mid_goal_piston)
+    wing_piston(wing_piston)
 {};
 
 // You want to call this function once in the user control function in main.
 void Assembly::init() {
+    assembly.outtake_motor.setBrake(hold);
+    tongue_piston.close();
+    mid_goal_piston.close();
+    wing_piston.open();
     // Create the task to move the lift arm. We only want one task to be created
     // lift_task = vex::task([](){
     //     assembly.move_lift_arm();

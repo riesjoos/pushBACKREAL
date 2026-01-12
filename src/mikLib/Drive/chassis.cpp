@@ -262,7 +262,7 @@ static float curve(float input, float deadband, float min_output, float curve_ga
 
 void Chassis::split_arcade_curved() {
     float throttle = vex::controller(vex::primary).Axis3.value();
-    float turn = vex::controller(vex::primary).Axis1.value();
+    float turn = 0.65*vex::controller(vex::primary).Axis1.value(); // ADDED 0.65 to make turning less sensitive
     throttle = std::round(curve(throttle, control_throttle_deadband, control_throttle_min_output, control_throttle_curve_gain));
     turn = std::round(curve(turn, control_turn_deadband, control_turn_min_output, control_turn_curve_gain));
     chassis.left_drive.spin(vex::fwd, percent_to_volt(throttle + turn), volt);
