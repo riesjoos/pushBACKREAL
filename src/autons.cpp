@@ -318,10 +318,55 @@ std::string red_right_elim(bool calibrate, auto_variation var, bool get_name) {
 std::string skills(bool calibrate, auto_variation var, bool get_name) {
     if (get_name) { return "skills"; }
     if (calibrate) {
-        chassis.set_coordinates(0, 0, 0);
+        chassis.set_coordinates(-39.709, -6.756, 90);
+
 
         return "";
     }
+    odom_constants();
+    turn_to_point_params p_turn_point = {};
+    p_turn_point.angle_offset = 0;
+    p_turn_point.timeout = 500;
+    chassis.turn_to_point(-45,-46);
+    wait(0.1,sec);
+    chassis.drive_to_point(-45,-46);
+    wait(0.1,sec);
+    // turn_to_point_params p_turn_point = {};
+    // p_turn_point = {};
+    // p_turn_point.angle_offset = 180;
+    // p_turn_point.timeout = 500;
+    // chassis.turn_to_point(-45,-60,p_turn_point);
+    chassis.turn_to_angle(270);
+    wait(0.1,sec);
+    chassis.turn_to_point(-60,-45);
+    wait(0.1,sec);
+    chassis.drive_to_point(-60,-45);
+    wait(1.5,sec);
+    chassis.drive_to_point(-55,-45);
+    wait(0.1,sec);
+    chassis.turn_to_point(-30,-60);
+    wait(1,sec);
+    chassis.drive_to_point(-30,-60);
+    wait(0.1,sec);
+    chassis.turn_to_angle(90);
+    // wait(0.1,sec);
+    // chassis.drive_to_point()
+    // p_turn_point = {};
+    // p_turn_point.angle_offset = 90;
+    // p_turn_point.timeout = 500;
+    // chassis.turn_to_point(-40,-40,p_turn_point);
+    // wait(0.1,sec);
+    // chassis.drive_to_point(-40,-40);
+    // wait(0.1,sec);
+    // p_turn_point = {};
+    // p_turn_point.angle_offset = 90;
+    // p_turn_point.timeout = 500;
+    // chassis.turn_to_point(60,-40,p_turn_point);
+    // wait(0.1,sec);
+    // chassis.drive_to_point(60,-40);
+
+    
+
 
     return "";
 }
