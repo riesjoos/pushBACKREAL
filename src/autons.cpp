@@ -332,39 +332,47 @@ std::string skills(bool calibrate, auto_variation var, bool get_name) {
     assembly.intake_motor.spin(forward,12,volt);
     wait(0.5,sec);
     chassis.drive_distance(15,{.max_voltage = 6});
+    chassis.stop_drive(hold);
     wait(4,sec);
     chassis.drive_distance(-15);
+    wait(0.1,sec);
     assembly.intake_motor.stop();
     assembly.tongue_piston.toggle();
     wait(0.1,sec);
     chassis.turn_to_angle(180);
     wait(0.1,sec);
-    chassis.drive_distance(15);
+    chassis.drive_distance(14);
     wait(0.1,sec);
     chassis.turn_to_angle(90);
     wait(0.1,sec);
-    chassis.drive_distance(90);
+    // go to second loader on opposite side
+    chassis.drive_distance(90,{.heading = 90});
     wait(0.1,sec);
     chassis.turn_to_angle(0);
     wait(0.1,sec);
-    chassis.drive_distance(16);
+    chassis.drive_distance(14);
     // 45,-48
     wait(0.1,sec);
     chassis.turn_to_angle(90);
     wait(0.1,sec);
-    chassis.drive_distance(-15);
+    chassis.drive_distance(-15,{.max_voltage = 6});
     wait(0.1,sec);
     assembly.outtake_motor.spin(forward,12,volt);
+    assembly.intake_motor.spin(forward,12,volt);
     wait(2,sec);
     assembly.outtake_motor.stop();
     assembly.tongue_piston.toggle();
     assembly.intake_motor.spin(forward,12,volt);
     wait(0.5,sec);
-    chassis.drive_distance(37);
-    wait(1.5,sec);
-    chassis.drive_distance(-37);
+    chassis.drive_distance(15);
+    wait(0.3,sec);
+    chassis.turn_to_angle(90);
+    wait(0.1,sec);
+    chassis.drive_distance(22);
+    wait(2,sec);
+    chassis.drive_distance(-37,{.max_voltage = 6});
     wait(0.5,sec);
-    assembly.intake_motor.stop();
+    assembly.outtake_motor.spin(forward,12,volt);
     assembly.tongue_piston.toggle();
 
 
