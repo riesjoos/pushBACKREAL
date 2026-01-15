@@ -311,13 +311,13 @@ std::string skills(bool calibrate, auto_variation var, bool get_name) {
     chassis.drive_distance(40);
     wait(0.1,sec);
     chassis.turn_to_angle(270);
-    wait(0.4,sec);
+    wait(0.1,sec);
     assembly.tongue_piston.toggle();
     assembly.intake_motor.spin(forward,12,volt);
     wait(0.5,sec);
-    chassis.drive_distance(12.8,{.max_voltage = 6});
+    chassis.drive_distance(11,{.max_voltage = 6});
     chassis.stop_drive(hold);
-    wait(4,sec);
+    wait(3,sec);
     chassis.drive_distance(-15);
     wait(0.1,sec);
     assembly.intake_motor.stop();
@@ -326,14 +326,14 @@ std::string skills(bool calibrate, auto_variation var, bool get_name) {
     chassis.turn_to_angle(180);
     wait(0.1,sec);
     assembly.intake_motor.spin(forward,12,volt);
-    wait(1.5,sec);
+    wait(1,sec);
     assembly.intake_motor.stop();
     chassis.drive_distance(14);
     wait(0.1,sec);
     chassis.turn_to_angle(90);
     wait(0.1,sec);
     // go to second loader on opposite side
-    chassis.drive_distance(90,{.heading = 86.5});
+    chassis.drive_distance(90,{.heading = 87.5});
     wait(0.1,sec);
     chassis.turn_to_angle(0);
     wait(0.1,sec);
@@ -356,7 +356,7 @@ std::string skills(bool calibrate, auto_variation var, bool get_name) {
     assembly.tongue_piston.toggle();
     wait(0.5,sec);
     // go into loader
-    chassis.drive_distance(18,{.max_voltage = 5,.heading = 90});
+    chassis.drive_distance(16.5,{.max_voltage = 5,.heading = 90});
     chassis.drive_distance(3.6, {.max_voltage = 3,.heading = 90});
     wait(2,sec);
     chassis.drive_distance(-22,{.max_voltage = 5,.heading = 87});
@@ -368,7 +368,7 @@ std::string skills(bool calibrate, auto_variation var, bool get_name) {
     chassis.drive_distance(-15,{.max_voltage = 3,.heading = 90});
     wait(0.5,sec);
     assembly.outtake_motor.spin(forward,12,volt);
-    wait(5,sec);
+    wait(3,sec);
     assembly.outtake_motor.stop();
     assembly.intake_motor.stop();
     chassis.drive_distance(15);
@@ -383,7 +383,7 @@ std::string skills(bool calibrate, auto_variation var, bool get_name) {
     assembly.tongue_piston.toggle();
     assembly.intake_motor.spin(forward,12,volt);
     wait(0.5,sec);
-    chassis.drive_distance(14,{.max_voltage = 4});
+    chassis.drive_distance(12.5,{.max_voltage = 4});
     wait(3,sec);
     chassis.drive_distance(-14.5);
     wait(0.1,sec);
@@ -404,7 +404,7 @@ std::string skills(bool calibrate, auto_variation var, bool get_name) {
     chassis.drive_distance(-18,{.max_voltage = 5,.heading = 270});
     assembly.intake_motor.spin(forward,12,volt);
     assembly.outtake_motor.spin(forward,12,volt);
-    wait(5,sec);
+    wait(3,sec);
     assembly.outtake_motor.stop();
     chassis.drive_distance(20,{.max_voltage = 6,.heading = 270});
     wait(0.1,sec);
@@ -416,12 +416,12 @@ std::string skills(bool calibrate, auto_variation var, bool get_name) {
     chassis.drive_distance(-37,{.max_voltage = 3,.heading = 270});
     wait(0.5,sec);
     assembly.outtake_motor.spin(forward,12,volt);
-    wait(5,sec);
+    wait(3,sec);
     assembly.tongue_piston.toggle();
     chassis.drive_distance(20);
     wait(0.1,sec);
     chassis.turn_to_angle(20);
-    chassis.drive_distance(-200,{.min_voltage = 12});
+    chassis.drive_distance(-75,{.min_voltage = 12});
 
     return "";
 }

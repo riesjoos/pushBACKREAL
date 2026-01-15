@@ -531,6 +531,8 @@ public:
     void split_arcade_curved();
     void tank();
     void tank_curved();
+    void curvature();
+
 
     /**
      * @brief Dispatch joystick input based on the selected drive mode.

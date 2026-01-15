@@ -292,6 +292,44 @@ void Chassis::tank_curved() {
     chassis.right_drive.spin(fwd, percent_to_volt(right_throttle), volt);
 }
 
+void Chassis::curvature() {
+    // Raw joystick input
+    float throttle = controller(primary).Axis3.value();
+    float turn = controller(primary).Axis1.value();
+
+    // Apply curve shaping (reuse your existing system)
+    throttle = std::round(curve(
+        throttle,
+        control_throttle_deadband,
+        control_throttle_min_output,
+        control_throttle_curve_gain
+    ));
+
+    turn = std::round(curve(
+        turn,
+        control_turn_deadband,
+        control_turn_min_output,
+        control_turn_curve_gain
+    ));
+
+    // Normalize to [-1, 1]
+    float t = throttle / 100.0f;
+    float r = turn / 100.0f;
+
+    // Curvature drive math
+    float left_output  = t + fabs(t) * r;
+    float right_output = t - fabs(t) * r;
+
+    // Clamp outputs
+    left_output  = std::max(-1.0f, std::min(left_output,  1.0f));
+    right_output = std::max(-1.0f, std::min(right_output, 1.0f));
+
+    // Send voltages to motors
+    chassis.left_drive.spin(fwd, percent_to_volt(left_output * 100), volt);
+    chassis.right_drive.spin(fwd, percent_to_volt(right_output * 100), volt);
+}
+
+
 void Chassis::control(drive_mode dm) {
     if (control_disabled) { 
         chassis.stop_drive(coast);
