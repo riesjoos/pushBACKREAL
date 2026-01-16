@@ -33,7 +33,7 @@ void user_control(void) {
     while (true) {
         if (!control_disabled()) {
             // Add your user control code here
-            chassis.control(drive_mode::CURVATURE);
+            chassis.control(drive_mode::SPLIT_ARCADE_CURVED);
             assembly.control();
         }
         task::sleep(5);

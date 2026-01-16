@@ -11,7 +11,8 @@ namespace mik {
         SPLIT_ARCADE,         // Left stick Y, right stick X
         SPLIT_ARCADE_CURVED,  // Split arcade with curved turns (from lemlib)
         TANK,                 // Tank drive
-        TANK_CURVED,          // Tank drive with curved turn (from lemlib)
+        TANK_CURVED,
+        CURVATURE,          // Tank drive with curved turn (from lemlib)
     };
 
     /** @brief Explicitly specifies rotation direction when turning or swinging. */
