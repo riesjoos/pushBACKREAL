@@ -297,7 +297,7 @@ void Chassis::curvature() {
     float throttle = controller(primary).Axis3.value();
     float turn = controller(primary).Axis1.value();
 
-    // Apply curve shaping (reuse your existing system)
+    // Apply curve shaping to both inputs
     throttle = std::round(curve(
         throttle,
         control_throttle_deadband,
@@ -316,15 +316,28 @@ void Chassis::curvature() {
     float t = throttle / 100.0f;
     float r = turn / 100.0f;
 
-    // Curvature drive math
-    float left_output  = t + fabs(t) * r;
-    float right_output = t - fabs(t) * r;
+    // Curvature drive math with quick turn capability
+    float left_output, right_output;
+    
+    // If throttle is near zero, use in-place turning (like split arcade)
+    if (fabs(t) < 0.1f) {
+        // Quick turn mode - turn in place
+        left_output = r;
+        right_output = -r;
+    } else {
+        // Curvature drive mode - turn based on forward velocity
+        left_output = t + fabs(t) * r;
+        right_output = t - fabs(t) * r;
+    }
 
-    // Clamp outputs
-    left_output  = std::max(-1.0f, std::min(left_output,  1.0f));
-    right_output = std::max(-1.0f, std::min(right_output, 1.0f));
+    // Normalize outputs if they exceed [-1, 1] range to maintain turn ratio
+    float max_magnitude = std::max(fabs(left_output), fabs(right_output));
+    if (max_magnitude > 1.0f) {
+        left_output /= max_magnitude;
+        right_output /= max_magnitude;
+    }
 
-    // Send voltages to motors
+    // Send voltages to motors (convert back to percentage)
     chassis.left_drive.spin(fwd, percent_to_volt(left_output * 100), volt);
     chassis.right_drive.spin(fwd, percent_to_volt(right_output * 100), volt);
 }
@@ -350,6 +363,9 @@ void Chassis::control(drive_mode dm) {
         return;
     case drive_mode::TANK_CURVED:
         tank_curved();
+        return;
+    case drive_mode::CURVATURE:
+        curvature();
         return;
     }
 }
