@@ -13,8 +13,8 @@ void default_constants(void) {
     chassis.set_swing_constants(11, 0.335, 0, 2.3, 0);
 
     // Each exit condition set is in the form of (settle_error, settle_time, timeout).
-    chassis.set_turn_exit_conditions(1.5, 75, 2000);
-    chassis.set_drive_exit_conditions(1, 75, 3000);
+    chassis.set_turn_exit_conditions(1.5, 45, 2000);
+    chassis.set_drive_exit_conditions(1, 45, 3000);
     chassis.set_swing_exit_conditions(1.25, 75, 3000);
 }
 
@@ -291,10 +291,39 @@ std::string red_right_sawp(bool calibrate, auto_variation var, bool get_name) {
 std::string red_right_elim(bool calibrate, auto_variation var, bool get_name) {   
     if (get_name) { return "red right elim"; }
     if (calibrate) {
-        chassis.set_coordinates(0, 0, 0);
+        chassis.set_coordinates(-39.709, -6.756, 90);
 
         return "";
     }
+    odom_constants();
+    chassis.turn_to_angle(107);
+    assembly.intake_motor.spin(forward,12,volt);
+    chassis.drive_distance(17);
+    assembly.tongue_piston.toggle();
+    wait(0.5,sec);
+    chassis.drive_distance(20);
+    assembly.tongue_piston.toggle();
+    wait(0.1,sec);
+    chassis.left_swing_to_angle(180);
+    chassis.drive_distance(8.6);
+    assembly.tongue_piston.toggle();
+    wait(0.5,sec);
+    chassis.left_swing_to_angle(90, {.turn_direction = ccw});
+    chassis.drive_distance(-21);
+    chassis.left_swing_to_angle(0, {.turn_direction = ccw});
+    wait(0.1,sec);
+    chassis.drive_distance(-6.5);
+    wait(0.1,sec);
+    chassis.left_swing_to_angle(270, {.turn_direction = ccw});
+    wait(0.2,sec);
+    chassis.drive_distance(-10, {.max_voltage = 5, .timeout = 1500});
+    assembly.outtake_motor.spin(forward,12,volt);
+    wait(2,sec);
+    chassis.drive_distance(20);
+    chassis.turn_to_angle(270);
+    chassis.drive_distance(20, {.max_voltage = 5, .timeout = 1000});
+    wait(1,sec);
+    chassis.drive_distance(-40);
 
     return "";
 }
@@ -307,121 +336,99 @@ std::string skills(bool calibrate, auto_variation var, bool get_name) {
 
         return "";
     }
+
     odom_constants();
-    chassis.drive_distance(40);
-    wait(0.1,sec);
-    chassis.turn_to_angle(270);
-    wait(0.1,sec);
-    assembly.tongue_piston.toggle();
-    assembly.intake_motor.spin(forward,12,volt);
-    wait(0.5,sec);
-    chassis.drive_distance(11,{.max_voltage = 6});
-    chassis.stop_drive(hold);
-    wait(3,sec);
-    chassis.drive_distance(-15);
-    wait(0.1,sec);
-    assembly.intake_motor.stop();
-    assembly.tongue_piston.toggle();
-    wait(0.1,sec);
-    chassis.turn_to_angle(180);
-    wait(0.1,sec);
-    assembly.intake_motor.spin(forward,12,volt);
-    wait(1,sec);
-    assembly.intake_motor.stop();
-    chassis.drive_distance(14);
-    wait(0.1,sec);
-    chassis.turn_to_angle(90);
-    wait(0.1,sec);
-    // go to second loader on opposite side
-    chassis.drive_distance(90,{.heading = 87.5});
-    wait(0.1,sec);
-    chassis.turn_to_angle(0);
-    wait(0.1,sec);
-    chassis.drive_distance(11.9);
-    wait(0.1,sec);
-    chassis.turn_to_angle(90);
-    wait(0.1,sec);
-    assembly.intake_motor.spin(forward,12,volt);
-    wait(0.1,sec);
-    chassis.drive_distance(-15,{.max_voltage = 6});
-    wait(0.1,sec);
-    assembly.outtake_motor.spin(forward,12,volt);
-    wait(3,sec);
-    assembly.outtake_motor.stop();
-    wait(0.5,sec);
-    chassis.drive_distance(15);
-    wait(0.3,sec);
-    chassis.turn_to_angle(90);
-    wait(0.1,sec);
-    assembly.tongue_piston.toggle();
-    wait(0.5,sec);
-    // go into loader
-    chassis.drive_distance(16.5,{.max_voltage = 5,.heading = 90});
-    chassis.drive_distance(3.6, {.max_voltage = 3,.heading = 90});
-    wait(2,sec);
-    chassis.drive_distance(-22,{.max_voltage = 5,.heading = 87});
-    wait(0.1,sec);
-    chassis.turn_to_angle(90);
-    wait(0.1,sec);
-    assembly.tongue_piston.toggle();
-    wait(0.1,sec);
-    chassis.drive_distance(-15,{.max_voltage = 3,.heading = 90});
-    wait(0.5,sec);
-    assembly.outtake_motor.spin(forward,12,volt);
-    wait(3,sec);
-    assembly.outtake_motor.stop();
-    assembly.intake_motor.stop();
-    chassis.drive_distance(15);
-    wait(0.3,sec);
-    chassis.turn_to_angle(0);
-    wait(0.3,sec);
-    // go to third loader
-    chassis.drive_distance(94,{.heading = 0});
-    wait(0.1,sec);
-    chassis.turn_to_angle(90);
-    wait(0.5,sec);
-    assembly.tongue_piston.toggle();
-    assembly.intake_motor.spin(forward,12,volt);
-    wait(0.5,sec);
-    chassis.drive_distance(12.5,{.max_voltage = 4});
-    wait(3,sec);
-    chassis.drive_distance(-14.5);
-    wait(0.1,sec);
-    chassis.turn_to_angle(0);
-    wait(0.1,sec);
-    assembly.tongue_piston.toggle();
-    wait(1.5,sec);
-    assembly.intake_motor.stop();
-    chassis.drive_distance(13);
-    wait(0.1,sec);
-    chassis.turn_to_angle(270);
-    wait(0.1,sec);
-    // go to last loader
-    chassis.drive_distance(90,{.heading = 270});
-    chassis.turn_to_angle(180);
-    chassis.drive_distance(10,{.heading = 180});
-    chassis.turn_to_angle(270);
-    chassis.drive_distance(-18,{.max_voltage = 5,.heading = 270});
-    assembly.intake_motor.spin(forward,12,volt);
-    assembly.outtake_motor.spin(forward,12,volt);
-    wait(3,sec);
-    assembly.outtake_motor.stop();
-    chassis.drive_distance(20,{.max_voltage = 6,.heading = 270});
-    wait(0.1,sec);
-    chassis.turn_to_angle(270);
-    assembly.tongue_piston.toggle();
-    wait(0.1,sec);
-    chassis.drive_distance(11.8, {.max_voltage = 3,.heading = 270});
-    wait(3,sec);
-    chassis.drive_distance(-37,{.max_voltage = 3,.heading = 270});
-    wait(0.5,sec);
-    assembly.outtake_motor.spin(forward,12,volt);
-    wait(3,sec);
-    assembly.tongue_piston.toggle();
-    chassis.drive_distance(20);
-    wait(0.1,sec);
-    chassis.turn_to_angle(20);
-    chassis.drive_distance(-75,{.min_voltage = 12});
+
+
+    chassis.drive_distance(15,{.heading = 180});
+    wait(0.2,sec);
+    chassis.drive_distance(-25,{.min_voltage = 12,.heading = 180});
+
+    // chassis.drive_distance(34,{.heading = 180});
+    // chassis.turn_to_angle(270);
+    // assembly.tongue_piston.toggle();
+    // assembly.intake_motor.spin(forward,12,volt);
+    // chassis.drive_distance(13,{.max_voltage = 3});
+    // chassis.stop_drive(hold);
+    // wait(1,sec);
+    // chassis.drive_distance(-16);
+    // assembly.intake_motor.stop();
+    // assembly.tongue_piston.toggle();
+    // chassis.turn_to_angle(180);
+    // assembly.intake_motor.spin(forward,12,volt);
+    // chassis.drive_distance(15);
+    // assembly.intake_motor.stop();
+    // chassis.turn_to_angle(90);
+    // // go to second loader on opposite side
+    // chassis.drive_distance(88,{.heading = 87.5});
+    // chassis.turn_to_angle(0);
+    // chassis.drive_distance(12,{.heading = 0});
+    // chassis.turn_to_angle(90);
+    // assembly.intake_motor.spin(forward,12,volt);
+    // chassis.drive_distance(-24,{.max_voltage = 6});
+    // assembly.outtake_motor.spin(forward,12,volt);
+    // wait(3,sec);
+    // assembly.outtake_motor.stop();
+    // chassis.drive_distance(15,{.max_voltage = 5,.heading = 90});
+    // assembly.tongue_piston.toggle();
+    // // go into loader
+    // chassis.drive_distance(14,{.max_voltage = 5,.heading = 90});
+    // chassis.drive_distance(6, {.max_voltage = 3,.heading = 90});
+    // wait(1.5,sec);
+    // chassis.drive_distance(-18,{.max_voltage = 5,.heading = 87});
+    // chassis.turn_to_angle(90);
+    // chassis.drive_distance(-13,{.max_voltage = 3,.heading = 90});
+    // assembly.outtake_motor.spin(forward,12,volt);
+    // assembly.intake_motor.spin(reverse,12,volt);
+    // wait(0.2,sec);
+    // assembly.intake_motor.spin(forward,12,volt);
+    // wait(2.5,sec);
+    // assembly.outtake_motor.stop();
+    // assembly.intake_motor.stop();
+    // chassis.drive_distance(12);
+    // assembly.tongue_piston.toggle();
+    // chassis.turn_to_angle(0);
+    // // go to third loader
+    // chassis.drive_distance(88,{.heading = 0});
+    // chassis.turn_to_angle(90);
+    // assembly.tongue_piston.toggle();
+    // wait(0.1,sec);
+    // assembly.intake_motor.spin(forward,12,volt);
+    // chassis.drive_distance(13.5,{.max_voltage = 4});
+    // wait(1.5,sec);
+    // assembly.intake_motor.stop();
+    // chassis.drive_distance(-14.5);
+    // chassis.turn_to_angle(0);
+    // assembly.tongue_piston.toggle();
+    // wait(1.5,sec);
+    // assembly.intake_motor.stop();
+    // chassis.drive_distance(13);
+    // chassis.turn_to_angle(270);
+    // // go to last loader
+    // chassis.drive_distance(90,{.heading = 270});
+    // chassis.turn_to_angle(180);
+    // chassis.drive_distance(10,{.heading = 180});
+    // chassis.turn_to_angle(270);
+    // chassis.drive_distance(-23,{.max_voltage = 5,.heading = 270});
+    // assembly.intake_motor.spin(forward,12,volt);
+    // assembly.outtake_motor.spin(forward,12,volt);
+    // wait(2.5,sec);
+    // assembly.outtake_motor.stop();
+    // assembly.tongue_piston.toggle();
+    // chassis.drive_distance(20,{.max_voltage = 6,.heading = 270});
+    // chassis.turn_to_angle(23);
+    // chassis.drive_distance(-43,{.min_voltage = 12});
+    // chassis.turn_to_angle(270);
+    // assembly.tongue_piston.toggle();
+    // chassis.drive_distance(16, {.max_voltage = 3,.heading = 270});
+    // wait(3,sec);
+    // chassis.drive_distance(-37,{.max_voltage = 3,.heading = 270});
+    // assembly.outtake_motor.spin(forward,12,volt);
+    // wait(3,sec);
+    // assembly.tongue_piston.toggle();
+    // chassis.drive_distance(20);
+    // chassis.turn_to_angle(23);
+    // chassis.drive_distance(-43,{.min_voltage = 12});
 
     return "";
 }

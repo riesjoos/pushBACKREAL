@@ -312,6 +312,10 @@ void Chassis::curvature() {
         control_turn_curve_gain
     ));
 
+
+    const float turn_sensitivity = 0.85f;  // Lower = less sensitive
+    turn *= turn_sensitivity;
+
     // Normalize to [-1, 1]
     float t = throttle / 100.0f;
     float r = turn / 100.0f;
