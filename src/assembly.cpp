@@ -26,7 +26,7 @@ void Assembly::init() {
     tongue_piston.close();
     mid_goal_piston.close();
     wing_piston.open();
-    ptoPiston.open();
+    ptoPiston.close();
     // Create the task to move the lift arm. We only want one task to be created
     // lift_task = vex::task([](){
     //     assembly.move_lift_arm();
@@ -52,10 +52,10 @@ void Assembly::control() {
 
 void Assembly::pto_control() {
     if (btnUp_new_press(Controller.ButtonL1.pressing()&&pto_mode!=intakeOnly)) {
+        pto_mode = intakeOnly;
         intake_motor.stop(brakeType::coast);   
         wait(200, msec);                   
-        ptoPiston.open();             
-        pto_mode = intakeOnly;
+        ptoPiston.close();             
     }
     else if (Controller.ButtonL1.pressing()) {
         intake_motor.spin(fwd, 12, volt);
@@ -65,7 +65,7 @@ void Assembly::pto_control() {
         pto_mode = both;
         intake_motor.stop(brakeType::coast);   
         wait(200, msec);                   
-        ptoPiston.close();             
+        ptoPiston.open();             
     }
     else if (Controller.ButtonL2.pressing()) {
         intake_motor.spin(fwd, 12, volt);
