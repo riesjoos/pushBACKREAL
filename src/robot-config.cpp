@@ -53,7 +53,8 @@ Assembly assembly(
 	mik::motor(PORT7,true,blue_6_1,"intake_motor"), 
 	mik::piston(PORT_A),
 	mik::piston(PORT_B),
-	mik::piston(PORT_C)
+	mik::piston(PORT_C),
+	mik::piston(PORT_D)
 );
 
 /** Allows UI to display all motor values */

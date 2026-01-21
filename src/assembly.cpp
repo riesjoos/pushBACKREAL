@@ -8,14 +8,16 @@ Assembly::Assembly(
     mik::motor intake_motor, 
     mik::piston mid_goal_piston,
     mik::piston tongue_piston,
-    mik::piston wing_piston
+    mik::piston wing_piston,
+    mik::piston ptoPiston
 ) :
     // Assign the ports to the devices
     outtake_motor(outtake_motor),
     intake_motor(intake_motor),
     mid_goal_piston(mid_goal_piston),
     tongue_piston(tongue_piston),
-    wing_piston(wing_piston)
+    wing_piston(wing_piston),
+    ptoPiston(ptoPiston)
 {};
 
 // You want to call this function once in the user control function in main.
@@ -24,6 +26,7 @@ void Assembly::init() {
     tongue_piston.close();
     mid_goal_piston.close();
     wing_piston.open();
+    ptoPiston.open();
     // Create the task to move the lift arm. We only want one task to be created
     // lift_task = vex::task([](){
     //     assembly.move_lift_arm();
@@ -34,27 +37,66 @@ void Assembly::init() {
 
 // You want to put this function inside the user control loop in main.
 void Assembly::control() {
-    intake_motors_control();
+    // intake_motors_control();
     mid_goal_piston_control();
     tongue_piston_control();
     wing_piston_control();
+    pto_control();
 }
 
-// Spins intake forward if L1 is being held, reverse if L2 is being held; stops otherwise
-void Assembly::intake_motors_control() {
-    if (Controller.ButtonL1.pressing()) {
-        intake_motor.spin(fwd, 12, volt);
-    } else if (Controller.ButtonL2.pressing()) {
+// 4 conditions for PTO control:
+// Intake only forward - piston retracted intake spin forward
+//Intake only reverse - piston retracted intake spin reverse
+//Both forward - piston extended intake spin forward
+//Both reverse - piston extended intake spin reverse
+
+void Assembly::pto_control() {
+    if (btnUp_new_press(Controller.ButtonL1.pressing()&&pto_mode!=intakeOnly)) {
+        intake_motor.stop(brakeType::coast);   
+        wait(200, msec);                   
+        ptoPiston.open();             
+        pto_mode = intakeOnly;
+    }
+    else if (Controller.ButtonL1.pressing()) {
         intake_motor.spin(fwd, 12, volt);
         outtake_motor.spin(fwd, 12, volt);
-    } else if (Controller.ButtonR1.pressing()) {
+    }
+    else if (Controller.ButtonL2.pressing()&&pto_mode!=both) {
+        pto_mode = both;
+        intake_motor.stop(brakeType::coast);   
+        wait(200, msec);                   
+        ptoPiston.close();             
+    }
+    else if (Controller.ButtonL2.pressing()) {
+        intake_motor.spin(fwd, 12, volt);
+        outtake_motor.spin(fwd, 12, volt);
+    }
+    else if (Controller.ButtonR1.pressing()){
         intake_motor.spin(fwd, -12, volt);
         outtake_motor.spin(fwd, -12, volt);
-    } else {
+    }
+    else {
         intake_motor.stop();
         outtake_motor.stop();
     }
 }
+
+
+// Spins intake forward if L1 is being held, reverse if L2 is being held; stops otherwise
+// void Assembly::intake_motors_control() {
+//     if (Controller.ButtonL1.pressing()) {
+//         intake_motor.spin(fwd, 12, volt);
+//     } else if (Controller.ButtonL2.pressing()) {
+//         intake_motor.spin(fwd, 12, volt);
+//         outtake_motor.spin(fwd, 12, volt);
+//     } else if (Controller.ButtonR1.pressing()) {
+//         intake_motor.spin(fwd, -12, volt);
+//         outtake_motor.spin(fwd, -12, volt);
+//     } else {
+//         intake_motor.stop();
+//         outtake_motor.stop();
+//     }
+// }
 
 
 // Extends or retracts piston when button A is pressed, can only extend or retract again until button A is released and pressed again
