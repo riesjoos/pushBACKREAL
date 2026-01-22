@@ -305,11 +305,11 @@ std::string red_right_elim(bool calibrate, auto_variation var, bool get_name) {
     assembly.tongue_piston.toggle();
     chassis.drive_distance(1.7,{.max_voltage = 7, .timeout = 400});
     wait(0.3,sec);
-    chassis.drive_distance(29.45);
+    chassis.drive_distance(19.25);
     assembly.tongue_piston.toggle();
     chassis.left_swing_to_angle(180, {.timeout = 600});
     chassis.drive_distance(8.7);
-    chassis.drive_distance(0.45, {.max_voltage = 5, .timeout = 200});
+    chassis.drive_distance(0.7, {.max_voltage = 5, .timeout = 200});
     assembly.tongue_piston.toggle();
     wait(0.4,sec);
     chassis.left_swing_to_angle(90, {.turn_direction = ccw, .timeout = 600});
