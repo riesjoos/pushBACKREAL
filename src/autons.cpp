@@ -289,47 +289,49 @@ std::string red_right_sawp(bool calibrate, auto_variation var, bool get_name) {
     return "";
 }
 std::string red_right_elim(bool calibrate, auto_variation var, bool get_name) {   
-    if (get_name) { return "red right elim"; }
+    if (get_name) { return "right 9 ball no wing"; }
     if (calibrate) {
         chassis.set_coordinates(-39.709, -6.756, 90);
 
         return "";
     }
+
     odom_constants();
-    chassis.turn_to_angle(107);
+    chassis.turn_to_angle(107, {.timeout = 200});
     assembly.ptoPiston.close();
     assembly.intake_motor.spin(forward,12,volt);
     assembly.outtake_motor.spin(forward,12,volt);
     chassis.drive_distance(17.7);
     assembly.tongue_piston.toggle();
-    chassis.drive_distance(1.1,{.max_voltage = 6});
-    chassis.drive_distance(20.2);
+    chassis.drive_distance(1.7,{.max_voltage = 7, .timeout = 400});
+    wait(0.3,sec);
+    chassis.drive_distance(29.45);
     assembly.tongue_piston.toggle();
     chassis.left_swing_to_angle(180, {.timeout = 600});
-    chassis.drive_distance(9.05);
+    chassis.drive_distance(8.7);
+    chassis.drive_distance(0.45, {.max_voltage = 5, .timeout = 200});
     assembly.tongue_piston.toggle();
     wait(0.4,sec);
     chassis.left_swing_to_angle(90, {.turn_direction = ccw, .timeout = 600});
     chassis.drive_distance(-21);
     chassis.left_swing_to_angle(0, {.turn_direction = ccw, .timeout = 600});
-    wait(0.1,sec);
-    chassis.drive_distance(-4.3, {.timeout = 600});
-    wait(0.1,sec);
+    chassis.drive_distance(-4.6, {.timeout = 600});
     chassis.left_swing_to_angle(270, {.turn_direction = ccw, .timeout = 600});
-    wait(0.2,sec);
-    chassis.drive_distance(-10, {.max_voltage = 6, .timeout = 1000});
+    wait(0.1,sec);
+    chassis.drive_distance(-8, {.max_voltage = 6, .timeout = 1000, .heading = 270});
+    chassis.drive_distance(-2, {.max_voltage = 4, .timeout = 1000, .heading = 270, .wait = false});
     assembly.ptoPiston.open();
     wait(2,sec);
     assembly.ptoPiston.close();
-    chassis.turn_to_angle(270);
-    chassis.drive_distance(20, {.timeout = 750,.heading = 270});
-    chassis.drive_distance(20, {.max_voltage = 6, .timeout = 1000});
+    chassis.turn_to_angle(265, {.timeout = 200});
+    chassis.drive_distance(22, {.timeout = 750,.heading = 267});
+    chassis.drive_distance(10, {.max_voltage = 6, .timeout = 1000, .heading = 269});
     wait(1,sec);
-    chassis.turn_to_angle(270);
-    chassis.drive_distance(-20, {.heading = 270});
-    chassis.drive_distance(-20, {.max_voltage = 6, .timeout = 1000});
+    chassis.turn_to_angle(270, {.timeout = 200});
+    chassis.drive_distance(-22, {.heading = 270});
+    chassis.drive_distance(-10, {.max_voltage = 6, .timeout = 1000, .heading = 270, .wait = false});
     assembly.ptoPiston.open();
-    wait(2,sec);
+    wait(10,sec);
 
     return "";
 }
