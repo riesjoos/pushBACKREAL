@@ -198,7 +198,44 @@ std::string red_left_elim(bool calibrate, auto_variation var, bool get_name) {
         chassis.set_coordinates(0, 0, 0);
         
         return "";
+
     }
+    odom_constants();
+    assembly.ptoPiston.close();
+    assembly.intake_motor.spin(forward,12,volt);
+    assembly.outtake_motor.spin(forward,12,volt);
+    chassis.drive_distance(23,{.max_voltage = 10});
+    assembly.tongue_piston.toggle();
+    chassis.drive_distance(8,{.max_voltage = 7});
+    wait(1,sec);
+    assembly.tongue_piston.toggle();
+    assembly.intake_motor.stop();
+    assembly.outtake_motor.stop();
+    chassis.turn_to_angle(0);
+    chassis.drive_distance(-17);
+    chassis.turn_to_angle(270);
+    chassis.drive_distance(23);
+    chassis.turn_to_angle(180);
+    chassis.drive_distance(10);
+    assembly.tongue_piston.toggle();
+    assembly.intake_motor.spin(forward,12,volt);
+    assembly.outtake_motor.spin(forward,12,volt);
+    chassis.drive_distance(10,{.max_voltage = 7});
+    wait(3,sec);
+    chassis.drive_distance(-10);
+    assembly.tongue_piston.toggle();
+    assembly.intake_motor.stop();
+    assembly.outtake_motor.stop();
+    chassis.drive_distance(-15);
+    assembly.ptoPiston.open();
+    assembly.intake_motor.spin(forward,12,volt);
+    assembly.outtake_motor.spin(forward,12,volt);
+    wait(4,sec);
+    
+
+
+
+
     
     return "";
 }
@@ -305,11 +342,11 @@ std::string red_right_elim(bool calibrate, auto_variation var, bool get_name) {
     assembly.tongue_piston.toggle();
     chassis.drive_distance(1.7,{.max_voltage = 7, .timeout = 400});
     wait(0.3,sec);
-    chassis.drive_distance(19.25);
+    chassis.drive_distance(19.75);
     assembly.tongue_piston.toggle();
     chassis.left_swing_to_angle(180, {.timeout = 600});
-    chassis.drive_distance(8.7);
-    chassis.drive_distance(0.7, {.max_voltage = 5, .timeout = 200});
+    chassis.drive_distance(8.4);
+    chassis.drive_distance(0.5, {.max_voltage = 5, .timeout = 200});
     assembly.tongue_piston.toggle();
     wait(0.4,sec);
     chassis.left_swing_to_angle(90, {.turn_direction = ccw, .timeout = 600});
@@ -331,7 +368,7 @@ std::string red_right_elim(bool calibrate, auto_variation var, bool get_name) {
     chassis.drive_distance(-22, {.heading = 270});
     chassis.drive_distance(-10, {.max_voltage = 6, .timeout = 1000, .heading = 270, .wait = false});
     assembly.ptoPiston.open();
-    wait(10,sec);
+    wait(4,sec);
 
     return "";
 }
