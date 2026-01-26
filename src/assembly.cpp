@@ -53,7 +53,8 @@ void Assembly::control() {
 void Assembly::pto_control() {
     if (btnUp_new_press(Controller.ButtonL1.pressing()&&pto_mode!=intakeOnly)) {
         pto_mode = intakeOnly;
-        intake_motor.stop(brakeType::coast);   
+        intake_motor.stop(brakeType::coast); 
+        outtake_motor.stop(brakeType::coast);  
         wait(200, msec);                   
         ptoPiston.close();             
     }
@@ -63,7 +64,8 @@ void Assembly::pto_control() {
     }
     else if (Controller.ButtonL2.pressing()&&pto_mode!=both) {
         pto_mode = both;
-        intake_motor.stop(brakeType::coast);   
+        intake_motor.stop(brakeType::coast);  
+        outtake_motor.stop(brakeType::coast); 
         wait(200, msec);                   
         ptoPiston.open();             
     }
